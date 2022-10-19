@@ -22,7 +22,7 @@ public void OnPluginStart()
 
 public Action Command_AdvisorRcon(int client, int args) // host_workshop_map, sv_cheats, mp_ignore_round_win_conditions
 {
-	char[] possibleCommands = "host_workshop_map;sv_cheats;mp_ignore_round_win_conditions";
+	char[] possibleCommands = "host_workshop_map sv_cheats mp_ignore_round_win_conditions";
 
 	if (args < 1)
 	{
