@@ -37,10 +37,15 @@ public Action Command_AdvisorRcon(int client, int args) // host_workshop_map, sv
 
 	// Check if the command is in the list of possible commands
 	if (StrContains(possibleCommands, commandstring, false) == -1)
-    {
-        ReplyToCommand(client, "[SM] Usage: sm_arcon <args> | Possible commands: sv_cheats, host_workshop_map, mp_ignore_round_win_conditions");
-        return Plugin_Handled;
-    }
+    	{
+        	ReplyToCommand(client, "[SM] This command is not in the list of possible commands | Possible commands: sv_cheats, host_workshop_map, mp_ignore_round_win_conditions");
+        	return Plugin_Handled;
+    	}
+	else if (StrContains(";", commandstring, false) == 1)
+	{
+		ReplyToCommand(client, "[SM] Command injection detected! Don't do that :(");
+		return Plugin_Handled;
+	}
 	else
 	{
 		char responseBuffer[4096];
