@@ -41,7 +41,7 @@ public Action Command_AdvisorRcon(int client, int args) // host_workshop_map, sv
         	ReplyToCommand(client, "[SM] This command is not in the list of possible commands | Possible commands: sv_cheats, host_workshop_map, mp_ignore_round_win_conditions");
         	return Plugin_Handled;
     	}
-	else if (StrContains(";", argstring, false) == 1)
+	else if (StrContains(argstring, ";", false) == 1)
 	{
 		ReplyToCommand(client, "[SM] Command injection detected! Don't do that :(");
 		return Plugin_Handled;
