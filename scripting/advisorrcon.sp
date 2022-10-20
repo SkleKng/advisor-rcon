@@ -24,34 +24,43 @@ public Action Command_AdvisorRcon(int client, int args) // host_workshop_map, sv
 {
 	char[] possibleCommands = "host_workshop_map sv_cheats mp_ignore_round_win_conditions";
 
-	if (args < 2)
+	if (args != 2)
 	{
 		ReplyToCommand(client, "[SM] Usage: sm_arcon <args> | Possible commands: sv_cheats, host_workshop_map, mp_ignore_round_win_conditions");
 		return Plugin_Handled;
 	}
+	else
+	{
+		char commandstring[255];
+		GetCmdArg(1, commandstring, sizeof(commandstring));
+		char argstring[255];
+		GetCmdArgString(argstring, sizeof(argstring));
 
-	char commandstring[255];
-	GetCmdArg(1, commandstring, sizeof(commandstring));
-	char argstring[255];
-	GetCmdArgString(argstring, sizeof(argstring));
-
-	// Check if the command is in the list of possible commands
-	if (StrContains(possibleCommands, commandstring, false) == -1)
+		// Check if the command is in the list of possible commands
+		if (StrContains(possibleCommands, commandstring, false) == -1)
     	{
         	ReplyToCommand(client, "[SM] This command is not in the list of possible commands | Possible commands: sv_cheats, host_workshop_map, mp_ignore_round_win_conditions");
         	return Plugin_Handled;
     	}
-	// Check for command injection
-	if (StrContains(argstring, ";", false) != -1)
-	{
-		ReplyToCommand(client, "[SM] Command injection detected! Don't do that :(");
-		return Plugin_Handled;
+		else
+		{
+			//Check if command contains a semicolon
+			if (StrContains(argstring, ";", false) != -1)
+			{
+				ReplyToCommand(client, "[SM] Command injection detected! Don't do that :(");
+				return Plugin_Handled;
+			}
+			else
+			{
+				char responseBuffer[4096];
+				ServerCommandEx(responseBuffer, sizeof(responseBuffer), "%s", argstring);
+				if (IsClientConnected(client))
+				{
+					ReplyToCommand(client, responseBuffer);
+				}
+				return Plugin_Handled;
+			}
+		}	
 	}
-	char responseBuffer[4096];
-	ServerCommandEx(responseBuffer, sizeof(responseBuffer), "%s", argstring);
-	if (IsClientConnected(client))
-	{
-		ReplyToCommand(client, responseBuffer);
-	}
-	return Plugin_Handled;
+	//idk why we had to do this nested conditional stuff
 }
